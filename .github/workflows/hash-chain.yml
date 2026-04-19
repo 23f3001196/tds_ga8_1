@@ -1,5 +1,5 @@
+# .github/workflows/hash-chain.yml - CORRECT VERSION
 name: Secret Hash Chain
-
 on:
   push:
     branches: [ main ]
@@ -9,13 +9,14 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup with marker-4ff828a6-here
+      - name: "marker-4ff828a6-checkpoint"
         run: echo "marker=4ff828a6"
 
-      - name: Compute hash chain
+      - name: Compute hash chain  
         env:
           MY_SECRET: ${{ secrets.MY_SECRET }}
         run: |
+          # CRITICAL: -n flag removes trailing newline!
           VERIFY_HASH=$(echo -n "${MY_SECRET}github-verified" | sha256sum | cut -c1-10)
           echo "Verify hash: ${VERIFY_HASH}"
           echo "${VERIFY_HASH}" > verify_hash.txt
